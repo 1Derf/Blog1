@@ -1,7 +1,5 @@
-from lib2to3.fixes.fix_input import context
+from django.shortcuts import render, redirect
 
-from django.shortcuts import render
-#from django.http import HttpResponse
 from .models import Post
 
 def home(request):
@@ -14,4 +12,9 @@ def home(request):
 
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
+
+def logout_view(request):
+    # Logout the user and return a success message
+    request.session.flush()
+    return redirect('home')  # Replace with your desired URL
 
