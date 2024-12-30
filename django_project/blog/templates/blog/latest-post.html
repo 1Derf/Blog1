@@ -1,0 +1,8 @@
+{% extends "blog/base.html" %}
+
+<h1>Latest Post</h1>
+
+<p>{{ post.title }}</p>
+<p>{{ post.content|truncatewords:50 }}</p>
+<p>Published on {{ post.created_at.date }}</p>
+
