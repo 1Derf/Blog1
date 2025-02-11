@@ -1,0 +1,69 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+{% load custom_filters %}
+
+<!-- Calendar Header -->
+<h1>{{ month_name }} {{ year }}</h1>
+<div class="calendar-navigation">
+    <a href="?month={{ previous_month }}&year={{ previous_year }}">Previous Month</a>
+    |
+    <a href="?month={{ next_month }}&year={{ next_year }}">Next Month</a>
+</div>
+
+<!-- Calendar Table -->
+<table class="calendar-table">
+    <tr>
+        <th>Sun</th>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+    </tr>
+    <tr>
+        <!-- Render empty cells before the 1st of the month -->
+        {% for _ in empty_cells %}
+            <td></td>
+        {% endfor %}
+
+        <!-- Render the days of the month -->
+        {% for day, row_break in days %}
+            <td>
+                {{ day }}
+
+                <!-- Display holidays -->
+                {% if holidays_by_date|get_item:day %}
+                    <div class="holiday">
+                        {% for holiday in holidays_by_date|get_item:day %}
+                            {{ holiday }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Display posts -->
+                {% if posts_by_date|get_item:day %}
+                    <ul>
+                        {% for post in posts_by_date|get_item:day %}
+                            <li><a href="{% url 'post-detail' post.id %}">{{ post.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+
+            <!-- Break the row if this day requires a break -->
+            {% if row_break %}
+                </tr><tr>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Fill the remaining cells in the last row -->
+        {% for _ in empty_cells_last_row %}
+            <td></td>
+        {% endfor %}
+    </tr>
+</table>
+
+<a href="{% url 'blog-home' %}">Back to Blog</a>
+{% endblock %}

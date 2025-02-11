@@ -3,10 +3,9 @@
 {% load static %}
 
 <html>
-    <head>
+<head>
 
     <!-- Required meta tags -->
-
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -14,17 +13,57 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
 
+    <style>
+        /* Calendar-specific styles */
+        .calendar-table {
+            width: 100%;  /* Use full width */
+            border-collapse: collapse;  /* Remove space between cells */
+            margin-bottom: 20px;  /* Space below the calendar */
+        }
+
+        .calendar-table th,
+        .calendar-table td {
+            border: 1px solid #ddd;  /* Add borders */
+            padding: 15px;  /* Increase padding for more space */
+            text-align: center;  /* Center align text */
+        }
+
+        .calendar-table th {
+            background-color: #f2f2f2;  /* Light background for headers */
+        }
+
+        .calendar-table td {
+            height: 80px;  /* Set a minimum height */
+            vertical-align: top;  /* Align text to the top */
+        }
+
+        .calendar-table ul {
+            list-style-type: none;  /* Remove bullet points */
+            padding: 0;  /* Remove padding */
+            margin: 0;  /* Remove margin */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .calendar-table th,
+            .calendar-table td {
+                padding: 10px;  /* Reduce padding on smaller screens */
+                height: 60px;  /* Reduce height for smaller screens */
+            }
+        }
+    </style>
+
     {% if title %}
-        <title>Derf Blog - {{ title }}</title>
+        <title>F & M Blog - {{ title }}</title>
     {% else %}
-        <title>Derf Blog </title>
+        <title>F & M Blog </title>
     {% endif %}
 </head>
 <body>
 <header class="site-header">
         <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
             <div class="container">
-                <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Derf Blog</a>
+                <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">F & M Blog</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -54,6 +93,22 @@
             </div>
         </nav>
     </header>
+
+<!-- Announcement Section -->
+<div class="container mt-5">
+    {% if announcements %}
+        <div class="announcements alert alert-info">
+            <h4>Announcements</h4>
+            <ul>
+                {% for announcement in announcements %}
+                    <li><strong>{{ announcement.title }}</strong>: {{ announcement.message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+
+
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">
@@ -61,7 +116,6 @@
             {% for message in messages %}
               <div class="alert alert-{{ message.tags }}">
                   {{ message }}
-              </div>
             {% endfor %}
           {% endif %}
           {% block content %}{% endblock %}
@@ -71,14 +125,21 @@
             <h3>Our Sidebar</h3>
               <p class='text-muted'>Anything !!</p>
               <ul class="list-group">
-                <li class="list-group-item list-group-item-light">Latest Posts</li>
-                <li class="list-group-item list-group-item-light">Announcements</li>
-                <li class="list-group-item list-group-item-light">Calendars</li>
+                <li class="list-group-item list-group-item-light">
+                    <a href="{% url 'latest_posts' %}" class="nav-link">View Latest Posts</a>
+                </li>
+
+                </li>
+                <li class="list-group-item list-group-item-light">
+                    <a href="{% url 'calendar' %}" class="nav-link">View Calendar</a>  <!-- Link to the calendar page -->
+                </li>
+
                   <li class="list-group-item list-group-item-light">etc</li>
               </ul>
         </div>
       </div>
     </main>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
