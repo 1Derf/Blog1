@@ -28,7 +28,7 @@ class Comment(models.Model):
         ordering = ['created_on']
 
     def __str__(self):
-        return f'Comment "{self.body}" by {self.user.username}'
+        return f"Comment by {self.user.username} on {self.post.title}"
 
 class Announcement(models.Model):
     title = models.CharField(max_length=200)
