@@ -87,3 +87,12 @@ a.article-title:hover {
     color: red;
     font-weight: bold;
 }
+
+.comment-img {
+    width: 60px; /* Same size as profile image */
+    height: 60px; /* Same size as profile image */
+    object-fit: cover; /* Ensures the image is cropped proportionally */
+    border-radius: 50%; /* Makes the image circular */
+    margin-right: 20px;
+  margin-bottom: 16px;
+}

@@ -37,10 +37,10 @@
             <div class="media comment-section">
                 <!-- Commenter's Avatar -->
                 {% if comment.user.profile.image %}
-                    <img class="rounded-circle account-img" src="{{ comment.user.profile.image.url }}" alt="{{ comment.user.username }}'s profile picture">
-                {% else %}
-                    <img class="rounded-circle account-img" src="{% static 'images/default-avatar.png' %}" alt="Default avatar">
-                {% endif %}
+                <img class="rounded-circle comment-img" src="{{ comment.user.profile.image.url }}" alt="{{ comment.user.username }}'s profile picture">
+            {% else %}
+                <img class="rounded-circle comment-img" src="{% static 'images/default-avatar.png' %}" alt="Default avatar">
+            {% endif %}
 
                 <!-- Comment Details -->
                 <div class="media-body">
