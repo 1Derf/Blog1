@@ -95,4 +95,12 @@ a.article-title:hover {
     border-radius: 50%; /* Makes the image circular */
     margin-right: 20px;
   margin-bottom: 16px;
+
+}
+
+@media screen and (min-width: 768px) {
+    .comment-img {
+        width: 65px; /* Larger size for tablets and desktops */
+        height: 65px;
+    }
 }
