@@ -10,7 +10,8 @@ from .views import (
     latest_posts,
     blog_post_detail,
 )
-
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 #from .views import views as auth_views
 from django.contrib.auth.views import LogoutView
@@ -32,7 +33,7 @@ urlpatterns = [
     path('calendar/', calendar_view, name='calendar'),
 ]
 
-
-
+if settings.DEBUG:  # Only serve media files during development
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

@@ -2,11 +2,13 @@ from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django_ckeditor_5.fields import CKEditor5Field
 
  #Create your models here.
 class BlogPost(models.Model):
     title = models.CharField(max_length=100)
-    content = models.TextField()
+    content = CKEditor5Field(config_name='default')
+    #content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -45,6 +47,16 @@ class Holiday(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.date})"
+
+
+class CalendarEvent(models.Model):
+    title = models.CharField(max_length=200)  # Event title
+    description = models.TextField(blank=True, null=True)  # Optional description
+    date = models.DateField()  # The date of the event
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)  # Admin who created the event
+
+    def __str__(self):
+        return f"{self.title} on {self.date}"
 
 
 #class Post(models.Model):

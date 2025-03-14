@@ -1,5 +1,6 @@
 
 {% extends "blog/base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="content_section">
@@ -11,7 +12,17 @@
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-info" type="submit">Post</button>
-                    </div>
+            </div>
         </form>
     </div>
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+    ClassicEditor.create(document.querySelector('#id_content'), {
+        toolbar: [ 'bold', 'italic', 'link', 'bulletedList', 'numberedList' ]
+    }).catch(error => {
+        console.error(error);
+    });
+</script>
+{% endblock %}

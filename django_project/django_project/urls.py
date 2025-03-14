@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from users import views as user_views
+from django.views.static import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,26 +34,40 @@ urlpatterns = [
          ),
          name='password_reset'),
 
-
     path('password-reset/done/',
-             auth_views.PasswordResetDoneView.as_view(
-                 template_name='users/password_reset_done.html'
-             ),
-            name='password_reset_done'),
+         auth_views.PasswordResetDoneView.as_view(
+             template_name='users/password_reset_done.html'
+         ),
+         name='password_reset_done'),
 
     path('password-reset-confirm/<uidb64>/<token>/',
-             auth_views.PasswordResetConfirmView.as_view(
-                 template_name='users/password_reset_confirm.html'
-             ),
-            name='password_reset_confirm'),
+         auth_views.PasswordResetConfirmView.as_view(
+             template_name='users/password_reset_confirm.html'
+         ),
+         name='password_reset_confirm'),
 
     path('password-reset-complete/',
-             auth_views.PasswordResetCompleteView.as_view(
-                 template_name='users/password_reset_complete.html'
-             ),
-             name='password_reset_complete'),
-# TODO fix the password reset password email video part 12 Corey Schafer (connect to email)
+         auth_views.PasswordResetCompleteView.as_view(
+             template_name='users/password_reset_complete.html'
+         ),
+         name='password_reset_complete'),
+
+    # Include blog app URLs
     path('', include('blog.urls')),
+
+    # Add CKEditor URLs for handling uploads
+    #path('ckeditor/', include('ckeditor_uploader.urls')),  # <-- Added this line!
+    path('ckeditor5/', include('django_ckeditor_5.urls')),
 ]
+
+# Serve favicon.ico in development
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += [
+        re_path(r'^favicon\.ico$', serve, {
+            'path': 'favicon.ico',
+            'document_root': settings.BASE_DIR,
+        }),
+    ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # <-- Added this line!

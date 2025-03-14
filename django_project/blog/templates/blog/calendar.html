@@ -31,25 +31,36 @@
         <!-- Render the days of the month -->
         {% for day, row_break in days %}
             <td>
-                {{ day }}
+                <div class="calendar-day">
+                    <strong>{{ day }}</strong>
 
-                <!-- Display holidays -->
-                {% if holidays_by_date|get_item:day %}
-                    <div class="holiday">
-                        {% for holiday in holidays_by_date|get_item:day %}
-                            {{ holiday }}
-                        {% endfor %}
-                    </div>
-                {% endif %}
+                    <!-- Display holidays -->
+                    {% if holidays_by_date|get_item:day %}
+                        <div class="holiday">
+                            <ul>
+                                {% for holiday in holidays_by_date|get_item:day %}
+                                    <li class="holiday-item">{{ holiday }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
 
-                <!-- Display posts -->
-                {% if posts_by_date|get_item:day %}
-                    <ul>
-                        {% for post in posts_by_date|get_item:day %}
-                            <li><a href="{% url 'post-detail' post.id %}">{{ post.title }}</a></li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+                    <!-- Display events -->
+                    {% if events_by_date|get_item:day %}
+                        <div class="event">
+                            <ul>
+                                {% for event in events_by_date|get_item:day %}
+                                    <li class="event-item">
+                                        <strong>{{ event.title }}</strong>
+                                        {% if event.description %}
+                                            <br>{{ event.description }}
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
             </td>
 
             <!-- Break the row if this day requires a break -->

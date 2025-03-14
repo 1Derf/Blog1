@@ -94,8 +94,7 @@ a.article-title:hover {
     object-fit: cover; /* Ensures the image is cropped proportionally */
     border-radius: 50%; /* Makes the image circular */
     margin-right: 20px;
-  margin-bottom: 16px;
-
+    margin-bottom: 16px;
 }
 
 @media screen and (min-width: 768px) {
@@ -103,4 +102,52 @@ a.article-title:hover {
         width: 65px; /* Larger size for tablets and desktops */
         height: 65px;
     }
+}
+
+/* ----- Add the Social Sharing Button Styles Below ----- */
+
+.social-sharing {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between icons */
+}
+
+.social-sharing {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Increased space between icons */
+}
+
+.social-sharing a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px; /* Increased size */
+    height: 70px; /* Increased size */
+    border-radius: 50%;
+    text-decoration: none;
+    color: white;
+    font-size: 50px; /* Increased icon size */
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out; /* Added smooth scaling hover effect */
+}
+
+/* Specific Platform Colors */
+.social-sharing a.twitter {
+    background-color: #1da1f2; /* X/Twitter blue */
+}
+
+.social-sharing a.facebook {
+    background-color: #4267B2; /* Facebook blue */
+}
+
+.social-sharing a.linkedin {
+    background-color: #0077b5; /* LinkedIn blue */
+}
+
+/* Hover Effect */
+.social-sharing a:hover {
+    opacity: 0.8; /* Slightly dim the color on hover */
+    transform: scale(1.1); /* Slight scaling effect on hover */
 }

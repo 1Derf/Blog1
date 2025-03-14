@@ -4,6 +4,7 @@
 
 <html>
 <head>
+    <link rel="icon" type="image/x-icon" href="{% static 'blog/favicon.ico' %}">
 
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -58,7 +59,10 @@
     {% else %}
         <title>F & M Blog </title>
     {% endif %}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
+
 <body>
 <header class="site-header">
         <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
@@ -151,5 +155,9 @@
         document.getElementById('logoutform').submit();
     });
 </script>
+
+     {% block extra_js %}
+<script src="https://cdn.ckeditor.com/ckeditor5/35.3.1/classic/ckeditor.js"></script>
+     {% endblock %}
 </body>
 </html>

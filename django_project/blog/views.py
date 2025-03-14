@@ -11,14 +11,9 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import BlogPost, Holiday, Comment
+from .models import BlogPost, Holiday, CalendarEvent, Comment
 from .forms import CommentForm
-
-from django.utils import timezone
-import pytz
-from calendar import monthrange
-import calendar
-from datetime import datetime
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 def LoginView(request):
     if request.method == 'POST':
@@ -66,13 +61,24 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     model = BlogPost
     fields = ['title', 'content']
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['content'].widget = CKEditor5Widget(config_name='default')
+        return form
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = BlogPost
     fields = ['title', 'content']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['content'].widget = CKEditor5Widget(config_name='default')
+        return form
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -140,17 +146,7 @@ def calendar_view(request):
         row_break = (day_position % 7 == 6)  # Break after Saturday
         days.append((i, row_break))
 
-    # Initialize posts_by_date as an empty dictionary
-    posts_by_date = {}
 
-    # Get posts for the specified month and year
-    posts = BlogPost.objects.filter(created_at__year=year, created_at__month=month)
-
-    for post in posts:
-        date = post.created_at.day
-        if date not in posts_by_date:
-            posts_by_date[date] = []
-        posts_by_date[date].append(post)
 
     # Get holidays for the specified month and year
     holidays = Holiday.objects.filter(date__year=year, date__month=month)
@@ -161,6 +157,17 @@ def calendar_view(request):
         if holiday.date.day not in holidays_by_date:
             holidays_by_date[holiday.date.day] = []
         holidays_by_date[holiday.date.day].append(holiday.name)
+
+    # Fetch calendar events for the specified month and year
+    events = CalendarEvent.objects.filter(date__year=year, date__month=month)
+
+    # Group events by their day
+    events_by_date = {}
+    for event in events:
+        event_date = event.date.day
+        if event_date not in events_by_date:
+            events_by_date[event_date] = []
+        events_by_date[event_date].append(event)
 
     # Calculate how many empty cells are needed in the last row
     total_cells = 7 * ((days_in_month + first_day_of_month + 6) // 7)
@@ -183,7 +190,6 @@ def calendar_view(request):
 
     context = {
         'days': days,
-        'posts_by_date': posts_by_date,
         'holidays_by_date': holidays_by_date,
         'month': month,
         'month_name': month_name_full,  # Pass the full month name to the template
@@ -200,10 +206,11 @@ def calendar_view(request):
     }
     return render(request, 'blog/calendar.html', context)
 
-@login_required
+#@login_required
 def blog_post_detail(request, pk):
     post = get_object_or_404(BlogPost, pk=pk)
     comments = post.comments.filter(active=True)  # Get all active comments for the post
+
 
     if request.method == 'POST':
         form = CommentForm(request.POST)
